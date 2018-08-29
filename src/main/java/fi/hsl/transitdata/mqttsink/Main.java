@@ -4,6 +4,7 @@ import com.typesafe.config.Config;
 import fi.hsl.common.ConfigParser;
 import fi.hsl.common.pulsar.PulsarApplication;
 import fi.hsl.common.pulsar.PulsarApplicationContext;
+import fi.hsl.common.transitdata.TransitdataUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,44 +16,15 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    //////////////////////////////////////////////////////////
-    // TODO move these to some utility class:
-
-    private static String getEnvOrThrow(String name) throws IllegalArgumentException {
-        return Optional.ofNullable(System.getenv(name))
-                .orElseThrow(() -> new IllegalArgumentException("Missing required env variable " + name));
-    }
-
-    private static Optional<String> getEnv(String name) {
-        return Optional.ofNullable(System.getenv(name));
-    }
-
-    private static Optional<Integer> safeParseInt(String value) {
-        try {
-            int n = Integer.parseInt(value);
-            return Optional.of(n);
-        }
-        catch (NumberFormatException e) {
-            e.printStackTrace();
-            return Optional.empty();
-        }
-    }
-
-    private static Optional<Integer> getIntEnv(String name) {
-        return Optional.ofNullable(System.getenv(name)).flatMap(Main::safeParseInt);
-    }
-
-    //////////////////////////////////////////////////////////
-
     private static MqttSinkConfig createSinkConfig(Config config) {
         String username = "";
         String password = "";
         try {
             //Default path is what works with Docker out-of-the-box. Override with a local file if needed
-            final String usernamePath = getEnv("FILEPATH_USERNAME_SECRET").orElse("/run/secrets/mqtt_broker_username");
+            final String usernamePath = TransitdataUtils.getEnv("FILEPATH_USERNAME_SECRET").orElse("/run/secrets/mqtt_broker_username");
             username = new Scanner(new File(usernamePath)).useDelimiter("\\Z").next();
 
-            final String passwordPath = getEnv("FILEPATH_PASSWORD_SECRET").orElse("/run/secrets/mqtt_broker_password");
+            final String passwordPath = TransitdataUtils.getEnv("FILEPATH_PASSWORD_SECRET").orElse("/run/secrets/mqtt_broker_password");
             password = new Scanner(new File(passwordPath)).useDelimiter("\\Z").next();
         } catch (Exception e) {
             log.error("Failed to read secret files", e);
