@@ -90,7 +90,7 @@
     </dependencies>
 
     <build>
-        <finalName>transitdata-mqtt-sink</finalName>
+        <finalName>pulsar-mqtt-gateway</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
