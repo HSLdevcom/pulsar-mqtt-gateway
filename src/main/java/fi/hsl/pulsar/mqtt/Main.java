@@ -1,4 +1,4 @@
-package fi.hsl.transitdata.mqttsink;
+package fi.hsl.pulsar.mqtt;
 
 import com.typesafe.config.Config;
 import fi.hsl.common.ConfigParser;
@@ -9,7 +9,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class Main {

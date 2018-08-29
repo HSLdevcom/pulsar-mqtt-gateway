@@ -1,4 +1,4 @@
-package fi.hsl.transitdata.mqttsink;
+package fi.hsl.pulsar.mqtt;
 
 public class MqttSinkConfigBuilder {
 

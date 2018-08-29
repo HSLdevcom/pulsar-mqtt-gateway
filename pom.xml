@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>fi.hsl.transitdata</groupId>
-    <artifactId>transitdata-mqtt-sink</artifactId>
+    <artifactId>pulsar-mqtt-gateway</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
@@ -135,7 +135,7 @@
                             <archiveBaseDirectory>${project.basedir}</archiveBaseDirectory>
                             <archive>
                                 <manifest>
-                                    <mainClass>fi.hsl.transitdata.mqttsink.Main</mainClass>
+                                    <mainClass>fi.hsl.pulsar.mqtt.Main</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
