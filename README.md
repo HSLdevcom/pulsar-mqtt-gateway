@@ -1,8 +1,7 @@
 ## Description
 
-Application for publishing GTFS-RT messages from Transitdata Pulsar topics to an external MQTT-broker.
-
-More system-level documentation can be found in [this project](https://gitlab.hsl.fi/transitdata/transitdata-doc).
+Application for publishing Pulsar messages to MQTT. The application doesn't care about 
+the data content, it only publishes the binary message as-is.
 
 ## Building
 
@@ -10,10 +9,11 @@ More system-level documentation can be found in [this project](https://gitlab.hs
 
 This project depends on [transitdata-common](https://gitlab.hsl.fi/transitdata/transitdata-common) project.
 
+Either use released versions from public maven repository or build your own and install to local maven repository:
+  - ```cd transitdata-common && mvn install```  
+
 ### Locally
 
-- Build and install common lib to local maven repository before compiling this one.
-  - ```cd transitdata-common && mvn install```  
 - ```mvn compile```  
 - ```mvn package```  
 
@@ -27,14 +27,18 @@ This project depends on [transitdata-common](https://gitlab.hsl.fi/transitdata/t
 ## Running
 
 Requirements:
-- Local Pulsar Cluster
+- Pulsar Cluster
   - By default uses localhost, override host in PULSAR_HOST if needed.
     - Tip: f.ex if running inside Docker in OSX set `PULSAR_HOST=host.docker.internal` to connect to the parent machine
   - You can use [this script](https://gitlab.hsl.fi/transitdata/transitdata-doc/bin/pulsar/pulsar-up.sh) to launch it as Docker container
-- Connection to an external MQTT server. configure username and password.
+- Connection to an external MQTT server. configure username and password via files
+  - Set filepath for username via env variable FILEPATH_USERNAME_SECRET, default is `/run/secrets/mqtt_broker_username` 
+  - Set filepath for password via env variable FILEPATH_PASSWORD_SECRET, default is `/run/secrets/mqtt_broker_password` 
+
+All other configuration options are configured in the [config file](src/main/resources/environment.conf) 
+which can also be configured externally via env variable CONFIG_PATH
 
 Launch Docker container with
 
 ```docker-compose -f compose-config-file.yml up <service-name>```   
 
-See [the documentation-project](https://gitlab.hsl.fi/transitdata/transitdata-doc) for details
