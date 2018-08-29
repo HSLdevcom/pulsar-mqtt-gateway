@@ -18,7 +18,7 @@ public class MessageProcessor implements IMessageHandler {
     private MqttAsyncClient mqttClient;
     private String mqttTopic;
 
-    public MessageProcessor(MqttSinkConfig config, Consumer<byte[]> consumer) throws MqttException {
+    public MessageProcessor(MqttConfig config, Consumer<byte[]> consumer) throws MqttException {
 
         this.consumer = consumer;
 
@@ -29,6 +29,7 @@ public class MessageProcessor implements IMessageHandler {
         connectOptions.setUserName(config.getUsername());
         connectOptions.setPassword(config.getPassword().toCharArray());
 
+        //Let's use memory persistance to optimize throughput.
         MemoryPersistence memoryPersistence = new MemoryPersistence();
 
         this.mqttClient = new MqttAsyncClient(config.getBroker(), config.getClientId(), memoryPersistence);

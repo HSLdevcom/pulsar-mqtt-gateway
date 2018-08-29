@@ -1,6 +1,6 @@
 package fi.hsl.pulsar.mqtt;
 
-public class MqttSinkConfigBuilder {
+public class MqttConfigBuilder {
 
     private String broker;
     private String mqttTopic;
@@ -9,7 +9,7 @@ public class MqttSinkConfigBuilder {
     private String clientId;
     private int maxInflight;
 
-    public MqttSinkConfigBuilder() {
+    public MqttConfigBuilder() {
         this.broker = null;
         this.mqttTopic = "gtfsrt/dev/fi/hsl/test";
         this.username = null;
@@ -18,43 +18,43 @@ public class MqttSinkConfigBuilder {
         this.maxInflight = 2000;
     }
 
-    public MqttSinkConfigBuilder setBroker(String broker) {
+    public MqttConfigBuilder setBroker(String broker) {
         this.broker = broker;
         return this;
     }
 
-    public MqttSinkConfigBuilder setMqttTopic(String mqttTopic) {
+    public MqttConfigBuilder setMqttTopic(String mqttTopic) {
         this.mqttTopic = mqttTopic;
         return this;
     }
 
-    public MqttSinkConfigBuilder setUsername(String username) {
+    public MqttConfigBuilder setUsername(String username) {
         this.username = username;
         return this;
     }
 
-    public MqttSinkConfigBuilder setPassword(String password) {
+    public MqttConfigBuilder setPassword(String password) {
         this.password = password;
         return this;
     }
 
-    public MqttSinkConfigBuilder setClientId(String clientId) {
+    public MqttConfigBuilder setClientId(String clientId) {
         this.clientId = clientId;
         return this;
     }
 
-    public MqttSinkConfigBuilder setMaxInflight(int maxInflight) {
+    public MqttConfigBuilder setMaxInflight(int maxInflight) {
         this.maxInflight = maxInflight;
         return this;
     }
 
-    public MqttSinkConfig build() {
+    public MqttConfig build() {
 
         if (broker == null  || mqttTopic == null || username == null || password == null || clientId == null) {
             throw new IllegalArgumentException("Required field not set for MqttSinkConfid");
         }
 
-        return new MqttSinkConfig(broker, mqttTopic, username, password, clientId, maxInflight);
+        return new MqttConfig(broker, mqttTopic, username, password, clientId, maxInflight);
     }
 
 

@@ -1,6 +1,6 @@
 package fi.hsl.pulsar.mqtt;
 
-public class MqttSinkConfig {
+public class MqttConfig {
 
     private String broker;
     private String mqttTopic;
@@ -9,8 +9,8 @@ public class MqttSinkConfig {
     private String clientId;
     private int  maxInflight;
 
-    public MqttSinkConfig(String broker, String mqttTopic, String username, String password,
-                          String clientId, int maxInflight) {
+    public MqttConfig(String broker, String mqttTopic, String username, String password,
+                      String clientId, int maxInflight) {
 
         this.broker = broker;
         this.mqttTopic = mqttTopic;
@@ -44,7 +44,7 @@ public class MqttSinkConfig {
         return maxInflight;
     }
 
-    public static MqttSinkConfigBuilder newBuilder() {
-        return new MqttSinkConfigBuilder();
+    public static MqttConfigBuilder newBuilder() {
+        return new MqttConfigBuilder();
     }
 }

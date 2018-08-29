@@ -15,7 +15,7 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    private static MqttSinkConfig createSinkConfig(Config config) {
+    private static MqttConfig createSinkConfig(Config config) {
         String username = "";
         String password = "";
         try {
@@ -32,7 +32,7 @@ public class Main {
         final String clientId = config.getString("mqtt-broker.clientId");
         final String broker = config.getString("mqtt-broker.host");
 
-        MqttSinkConfigBuilder configBuilder = MqttSinkConfig.newBuilder()
+        MqttConfigBuilder configBuilder = MqttConfig.newBuilder()
                 .setBroker(broker)
                 .setUsername(username)
                 .setPassword(password)
@@ -55,7 +55,7 @@ public class Main {
 
     public static void main(String[] args) {
         Config config = ConfigParser.createConfig();
-        MqttSinkConfig sinkConfig = createSinkConfig(config);
+        MqttConfig sinkConfig = createSinkConfig(config);
         try (PulsarApplication app = PulsarApplication.newInstance(config)) {
             PulsarApplicationContext context = app.getContext();
 
