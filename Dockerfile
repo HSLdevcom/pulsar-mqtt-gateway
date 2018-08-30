@@ -27,6 +27,6 @@ FROM openjdk:8-jre-slim
 
 #This container can access the build artifacts inside the BUILD container.
 #Everything that is not copied is discarded
-COPY --from=BUILD /usr/src/app/target/transitdata-mqtt-sink-jar-with-dependencies.jar /usr/app/transitdata-mqtt-sink.jar
+COPY --from=BUILD /usr/src/app/target/pulsar-mqtt-gateway-jar-with-dependencies.jar /usr/app/pulsar-mqtt-gateway.jar
 
-ENTRYPOINT ["java", "-jar", "/usr/app/transitdata-mqtt-sink.jar"]
+ENTRYPOINT ["java", "-jar", "/usr/app/pulsar-mqtt-gateway.jar"]

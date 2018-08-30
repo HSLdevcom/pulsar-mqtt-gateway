@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t transitdata-mqtt-sink .
+docker build -t pulsar-mqtt-gateway .

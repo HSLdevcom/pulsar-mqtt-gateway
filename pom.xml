@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
     <groupId>fi.hsl.transitdata</groupId>
-    <artifactId>transitdata-mqtt-sink</artifactId>
+    <artifactId>pulsar-mqtt-gateway</artifactId>
     <version>0.1.0</version>
     <packaging>jar</packaging>
 
@@ -9,7 +9,7 @@
         <maven.compiler.source>1.6</maven.compiler.source>
         <maven.compiler.target>1.6</maven.compiler.target>
         <pulsar.version>2.1.0-incubating</pulsar.version>
-        <common.version>1.0.0</common.version>
+        <common.version>0.1.0</common.version>
         <paho.version>1.2.0</paho.version>
     </properties>
 
@@ -90,7 +90,7 @@
     </dependencies>
 
     <build>
-        <finalName>transitdata-mqtt-sink</finalName>
+        <finalName>pulsar-mqtt-gateway</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
@@ -135,7 +135,7 @@
                             <archiveBaseDirectory>${project.basedir}</archiveBaseDirectory>
                             <archive>
                                 <manifest>
-                                    <mainClass>fi.hsl.transitdata.mqttsink.Main</mainClass>
+                                    <mainClass>fi.hsl.pulsar.mqtt.Main</mainClass>
                                 </manifest>
                             </archive>
                             <descriptorRefs>
