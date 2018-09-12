@@ -6,8 +6,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <maven.compiler.source>1.6</maven.compiler.source>
-        <maven.compiler.target>1.6</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pulsar.version>2.1.0-incubating</pulsar.version>
         <common.version>0.1.2</common.version>
         <paho.version>1.2.0</paho.version>
