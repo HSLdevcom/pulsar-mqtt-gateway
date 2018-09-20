@@ -11,9 +11,6 @@ RUN mkdir -p /usr/src/app
 
 #Copy pom.xml file and download dependencies. This stage will be cached if the pom.xml file is not changed
 COPY pom.xml /usr/src/app
-#Copy local dependencies and install them during clean-phase. TODO remove this step once we have all dependencies in public repositories
-COPY dependencies/*.jar /usr/src/app/dependencies/
-RUN mvn -f /usr/src/app/pom.xml clean
 
 RUN mvn -f /usr/src/app/pom.xml dependency:resolve-plugins dependency:resolve clean package
 
