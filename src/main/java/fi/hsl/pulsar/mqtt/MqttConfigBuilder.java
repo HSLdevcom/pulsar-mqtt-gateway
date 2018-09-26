@@ -45,7 +45,7 @@ public class MqttConfigBuilder {
     public MqttConfig build() {
 
         if (broker == null  || mqttTopic == null || username == null || password == null || clientId == null) {
-            throw new IllegalArgumentException("Required field not set for MqttSinkConfid");
+            throw new IllegalArgumentException("Required field not set for MqttConfig");
         }
 
         return new MqttConfig(broker, mqttTopic, username, password, clientId, maxInflight);
