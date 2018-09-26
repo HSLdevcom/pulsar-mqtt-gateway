@@ -28,7 +28,7 @@ Requirements:
 - Pulsar Cluster
   - By default uses localhost, override host in PULSAR_HOST if needed.
     - Tip: f.ex if running inside Docker in OSX set `PULSAR_HOST=host.docker.internal` to connect to the parent machine
-  - You can use [this script](https://gitlab.hsl.fi/transitdata/transitdata-doc/bin/pulsar/pulsar-up.sh) to launch it as Docker container
+  - You can use [this script](https://github.com/HSLdevcom/transitdata/blob/master/bin/pulsar/pulsar-up.sh) to launch it as Docker container
 - Connection to an external MQTT server. 
   - Configure username and password via files
     - Set filepath for username via env variable FILEPATH_USERNAME_SECRET, default is `/run/secrets/mqtt_broker_username` 
