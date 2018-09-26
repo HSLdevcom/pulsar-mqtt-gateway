@@ -23,12 +23,10 @@ public class Main {
             final String usernamePath = ConfigUtils.getEnv("FILEPATH_USERNAME_SECRET").orElse("/run/secrets/mqtt_broker_username");
             log.debug("Reading username from " + usernamePath);
             username = new Scanner(new File(usernamePath)).useDelimiter("\\Z").next();
-            log.debug("read username:" + username);
 
             final String passwordPath = ConfigUtils.getEnv("FILEPATH_PASSWORD_SECRET").orElse("/run/secrets/mqtt_broker_password");
             log.debug("Reading password from " + passwordPath);
             password = new Scanner(new File(passwordPath)).useDelimiter("\\Z").next();
-            log.debug("read password:" + password);
 
         } catch (Exception e) {
             log.error("Failed to read secret files", e);
