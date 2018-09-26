@@ -26,6 +26,10 @@ public class MessageProcessor implements IMessageHandler {
         connectOptions.setCleanSession(false);
         connectOptions.setMaxInflight(config.getMaxInflight());
         connectOptions.setAutomaticReconnect(true);
+
+        log.debug("config username:"+config.getUsername());
+        log.debug("config password:"+config.getPassword());
+
         connectOptions.setUserName(config.getUsername());
         connectOptions.setPassword(config.getPassword().toCharArray());
 
