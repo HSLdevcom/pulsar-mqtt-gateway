@@ -10,12 +10,6 @@ public class MqttConfigBuilder {
     private int maxInflight;
 
     public MqttConfigBuilder() {
-        this.broker = null;
-        this.mqttTopic = "gtfsrt/dev/fi/hsl/test";
-        this.username = null;
-        this.password = null;
-        this.clientId = null;
-        this.maxInflight = 2000;
     }
 
     public MqttConfigBuilder setBroker(String broker) {
