@@ -60,8 +60,7 @@ public class Main {
 
         try (PulsarApplication app = PulsarApplication.newInstance(config)) {
             PulsarApplicationContext context = app.getContext();
-
-            MessageProcessor processor = new MessageProcessor(sinkConfig, context.getConsumer());
+            MessageProcessor processor = MessageProcessor.newInstance(sinkConfig, context.getConsumer());
 
             log.info("Starting to process messages");
 

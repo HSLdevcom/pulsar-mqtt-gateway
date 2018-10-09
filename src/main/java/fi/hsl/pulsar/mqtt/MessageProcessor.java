@@ -18,40 +18,63 @@ public class MessageProcessor implements IMessageHandler {
     private MqttAsyncClient mqttClient;
     private String mqttTopic;
 
-    public MessageProcessor(MqttConfig config, Consumer<byte[]> consumer) throws MqttException {
-
+    private MessageProcessor(Consumer<byte[]> consumer, MqttAsyncClient mqttClient, String topic) {
         this.consumer = consumer;
+        this.mqttClient = mqttClient;
+        this.mqttTopic = topic;
+    }
 
-        MqttConnectOptions connectOptions = new MqttConnectOptions();
-        connectOptions.setCleanSession(false);
-        connectOptions.setMaxInflight(config.getMaxInflight());
-        connectOptions.setAutomaticReconnect(true);
+    public static MessageProcessor newInstance(MqttConfig config, Consumer<byte[]> consumer) throws MqttException {
+        MqttAsyncClient mqttClient = null;
+        try {
+            MqttConnectOptions connectOptions = new MqttConnectOptions();
+            connectOptions.setCleanSession(false);
+            connectOptions.setMaxInflight(config.getMaxInflight());
+            connectOptions.setAutomaticReconnect(true);
 
-        connectOptions.setUserName(config.getUsername());
-        connectOptions.setPassword(config.getPassword().toCharArray());
+            connectOptions.setUserName(config.getUsername());
+            connectOptions.setPassword(config.getPassword().toCharArray());
 
-        //Let's use memory persistance to optimize throughput.
-        MemoryPersistence memoryPersistence = new MemoryPersistence();
+            //Let's use memory persistance to optimize throughput.
+            MemoryPersistence memoryPersistence = new MemoryPersistence();
 
-        this.mqttClient = new MqttAsyncClient(config.getBroker(), config.getClientId(), memoryPersistence);
-        mqttClient.setCallback(new MqttCallback() {
-            @Override
-            public void connectionLost(Throwable cause) {
-                log.error("Connection to mqtt broker lost: " + cause.getMessage(), cause);
+            mqttClient = new MqttAsyncClient(config.getBroker(), config.getClientId(), memoryPersistence);
+            mqttClient.setCallback(new MqttCallback() {
+                @Override
+                public void connectionLost(Throwable cause) {
+                    log.error("Connection to mqtt broker lost", cause);
+                }
+
+                @Override
+                public void messageArrived(String topic, MqttMessage message) throws Exception {}
+
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken token) {}
+            });
+
+            log.info(String.format("Connecting to mqtt broker %s", config.getBroker()));
+            IMqttToken token = mqttClient.connect(connectOptions, null, new IMqttActionListener() {
+                public void onSuccess(IMqttToken asyncActionToken) {
+                    log.info("Connected");
+                }
+
+                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                    log.error("Connection failed: ", exception);
+                }
+            });
+            token.waitForCompletion();
+            log.info("Connection to MQTT finished");
+        }
+        catch (Exception e) {
+            log.error("Error connecting to MQTT", e);
+            if (mqttClient != null) {
+                //Paho doesn't close the connection threads unless we force-close it.
+                mqttClient.close(true);
             }
+            throw e;
+        }
 
-            @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {}
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {}
-        });
-
-        log.info(String.format("Connecting to mqtt broker %s", config.getBroker()));
-        IMqttToken token = mqttClient.connect(connectOptions);
-        token.waitForCompletion();
-
-        this.mqttTopic = config.getMqttTopic();
+        return new MessageProcessor(consumer, mqttClient, config.getMqttTopic());
     }
 
     @Override
@@ -79,6 +102,7 @@ public class MessageProcessor implements IMessageHandler {
         }
         catch (MqttException e) {
             log.error("Error publishing MQTT message", e);
+            throw e;
         }
     }
 }
