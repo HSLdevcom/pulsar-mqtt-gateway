@@ -48,7 +48,8 @@ public class MessageProcessor implements IMessageHandler {
         });
 
         log.info(String.format("Connecting to mqtt broker %s", config.getBroker()));
-        mqttClient.connect(connectOptions);
+        IMqttToken token = mqttClient.connect(connectOptions);
+        token.waitForCompletion();
 
         this.mqttTopic = config.getMqttTopic();
     }

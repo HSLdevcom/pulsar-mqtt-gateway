@@ -62,7 +62,6 @@ public class Main {
             PulsarApplicationContext context = app.getContext();
 
             MessageProcessor processor = new MessageProcessor(sinkConfig, context.getConsumer());
-            Thread.sleep(1000L); //Wait for connection to complete
 
             log.info("Starting to process messages");
 
