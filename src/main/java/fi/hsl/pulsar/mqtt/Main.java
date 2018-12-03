@@ -36,7 +36,8 @@ public class Main {
         final String broker = config.getString("mqtt-broker.host");
         final int maxInFlight = config.getInt("mqtt-broker.maxInflight");
         final String topic = config.getString("mqtt-broker.topic");
-        log.info("Setting MQTT topic to " + topic);
+        final boolean retainMessage = config.getBoolean("mqtt-broker.retainMessage");
+        log.info("Setting MQTT topic to {} with retain message enabled: {} ", topic, retainMessage);
 
         MqttConfigBuilder configBuilder = MqttConfig.newBuilder()
                 .setBroker(broker)
@@ -44,7 +45,8 @@ public class Main {
                 .setPassword(password)
                 .setClientId(clientId)
                 .setMqttTopic(topic)
-                .setMaxInflight(maxInFlight);
+                .setMaxInflight(maxInFlight)
+                .setRetainMessage(retainMessage);
 
         return configBuilder.build();
     }
