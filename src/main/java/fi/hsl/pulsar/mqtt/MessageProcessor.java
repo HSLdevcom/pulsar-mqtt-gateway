@@ -17,11 +17,13 @@ public class MessageProcessor implements IMessageHandler {
     private Consumer<byte[]> consumer;
     private MqttAsyncClient mqttClient;
     private String mqttTopic;
+    private boolean retainMessage = false;
 
-    private MessageProcessor(Consumer<byte[]> consumer, MqttAsyncClient mqtt, String topic) {
+    private MessageProcessor(Consumer<byte[]> consumer, MqttAsyncClient mqtt, String topic, boolean retain) {
         this.consumer = consumer;
         this.mqttClient = mqtt;
         this.mqttTopic = topic;
+        this.retainMessage = retain;
         mqttClient.setCallback(new MqttCallback() {
             @Override
             public void connectionLost(Throwable cause) {
@@ -76,7 +78,7 @@ public class MessageProcessor implements IMessageHandler {
             throw e;
         }
 
-        return new MessageProcessor(consumer, mqttClient, config.getMqttTopic());
+        return new MessageProcessor(consumer, mqttClient, config.getMqttTopic(), config.getRetainMessage());
     }
 
     @Override
@@ -84,6 +86,7 @@ public class MessageProcessor implements IMessageHandler {
         try {
             final MqttMessage mqttMsg = new MqttMessage();
             mqttMsg.setQos(1);
+            mqttMsg.setRetained(retainMessage);
             mqttMsg.setPayload(msg.getData());
             mqttClient.publish(mqttTopic, mqttMsg, null, new IMqttActionListener() {
                 @Override

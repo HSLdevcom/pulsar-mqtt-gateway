@@ -7,10 +7,11 @@ public class MqttConfig {
     private String username;
     private String password;
     private String clientId;
-    private int  maxInflight;
+    private int maxInflight;
+    private boolean retainMessage;
 
     public MqttConfig(String broker, String mqttTopic, String username, String password,
-                      String clientId, int maxInflight) {
+                      String clientId, int maxInflight, boolean retainMessage) {
 
         this.broker = broker;
         this.mqttTopic = mqttTopic;
@@ -18,6 +19,7 @@ public class MqttConfig {
         this.password = password;
         this.clientId = clientId;
         this.maxInflight = maxInflight;
+        this.retainMessage = retainMessage;
     }
 
     public String getBroker() {
@@ -42,6 +44,10 @@ public class MqttConfig {
 
     public int getMaxInflight() {
         return maxInflight;
+    }
+
+    public boolean getRetainMessage() {
+        return retainMessage;
     }
 
     public static MqttConfigBuilder newBuilder() {
