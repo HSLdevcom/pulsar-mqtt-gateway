@@ -122,4 +122,11 @@ public class MessageProcessor implements IMessageHandler {
             log.error("Failed to close MQTT client connection", e);
         }
     }
+
+    public boolean isMqttConnected() {
+        if (mqttClient != null) {
+            return mqttClient.isConnected();
+        }
+        return false;
+    }
 }

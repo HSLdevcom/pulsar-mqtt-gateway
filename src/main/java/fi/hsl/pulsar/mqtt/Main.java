@@ -3,6 +3,7 @@ package fi.hsl.pulsar.mqtt;
 import com.typesafe.config.Config;
 import fi.hsl.common.config.ConfigParser;
 import fi.hsl.common.config.ConfigUtils;
+import fi.hsl.common.health.HealthServer;
 import fi.hsl.common.pulsar.PulsarApplication;
 import fi.hsl.common.pulsar.PulsarApplicationContext;
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.Scanner;
+import java.util.function.BooleanSupplier;
 
 public class Main {
 
@@ -64,6 +66,17 @@ public class Main {
             PulsarApplicationContext context = app.getContext();
             MessageProcessor processor = MessageProcessor.newInstance(sinkConfig, context.getConsumer());
 
+            HealthServer healthServer = context.getHealthServer();
+            final BooleanSupplier mqttHealthCheck = () -> {
+                if (processor != null) {
+                    return processor.isMqttConnected();
+                }
+                return false;
+            };
+            if (healthServer != null) {
+                healthServer.addCheck(mqttHealthCheck);
+            }
+            
             log.info("Starting to process messages");
 
             app.launchWithHandler(processor);
