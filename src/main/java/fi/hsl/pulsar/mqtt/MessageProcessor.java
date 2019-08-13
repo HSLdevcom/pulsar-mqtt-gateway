@@ -115,7 +115,7 @@ public class MessageProcessor implements IMessageHandler {
     private void closeMqttClient() {
         try {
             //Paho doesn't close the connection threads unless we force-close it.
-            mqttClient.disconnectForcibly(5000L);
+            mqttClient.disconnectForcibly(1000L, 1000L);
             mqttClient.close(true);
         }
         catch (Exception e) {
