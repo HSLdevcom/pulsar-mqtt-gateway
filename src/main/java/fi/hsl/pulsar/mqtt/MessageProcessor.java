@@ -115,11 +115,18 @@ public class MessageProcessor implements IMessageHandler {
     private void closeMqttClient() {
         try {
             //Paho doesn't close the connection threads unless we force-close it.
-            mqttClient.disconnectForcibly(5000L);
+            mqttClient.disconnectForcibly(1000L, 1000L);
             mqttClient.close(true);
         }
         catch (Exception e) {
             log.error("Failed to close MQTT client connection", e);
         }
+    }
+
+    public boolean isMqttConnected() {
+        if (mqttClient != null) {
+            return mqttClient.isConnected();
+        }
+        return false;
     }
 }
