@@ -1,6 +1,7 @@
 package fi.hsl.pulsar.mqtt;
 
 import fi.hsl.common.pulsar.IMessageHandler;
+import fi.hsl.common.transitdata.TransitdataProperties;
 import org.apache.pulsar.client.api.*;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
@@ -88,7 +89,10 @@ public class MessageProcessor implements IMessageHandler {
             mqttMsg.setQos(1);
             mqttMsg.setRetained(retainMessage);
             mqttMsg.setPayload(msg.getData());
-            mqttClient.publish(mqttTopic, mqttMsg, null, new IMqttActionListener() {
+
+            final String topicSuffix = msg.getProperty(TransitdataProperties.KEY_MQTT_TOPIC);
+
+            mqttClient.publish(topicSuffix == null ? mqttTopic : mqttTopic + "/" + topicSuffix, mqttMsg, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     //Ack Pulsar message
