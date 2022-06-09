@@ -6,6 +6,7 @@ public class MqttConfigBuilder {
     private String mqttTopic;
     private String username;
     private String password;
+    private boolean authentication;
     private String clientId;
     private int maxInflight;
     private boolean retainMessage;
@@ -33,6 +34,11 @@ public class MqttConfigBuilder {
         return this;
     }
 
+    public MqttConfigBuilder setAuthentication(boolean authentication) {
+        this.authentication = authentication;
+        return this;
+    }
+
     public MqttConfigBuilder setClientId(String clientId) {
         this.clientId = clientId;
         return this;
@@ -50,11 +56,11 @@ public class MqttConfigBuilder {
 
     public MqttConfig build() {
 
-        if (broker == null  || mqttTopic == null || username == null || password == null || clientId == null) {
+        if (broker == null  || mqttTopic == null || (authentication && (username == null || password == null)) || clientId == null) {
             throw new IllegalArgumentException("Required field not set for MqttConfig");
         }
 
-        return new MqttConfig(broker, mqttTopic, username, password, clientId, maxInflight, retainMessage);
+        return new MqttConfig(broker, mqttTopic, username, password, authentication, clientId, maxInflight, retainMessage);
     }
 
 
