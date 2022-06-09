@@ -49,8 +49,10 @@ public class MessageProcessor implements IMessageHandler {
             connectOptions.setMaxInflight(config.getMaxInflight());
             connectOptions.setAutomaticReconnect(false); //Let's abort on connection errors
 
-            connectOptions.setUserName(config.getUsername());
-            connectOptions.setPassword(config.getPassword().toCharArray());
+            if (config.hasAuthentication()) {
+                connectOptions.setUserName(config.getUsername());
+                connectOptions.setPassword(config.getPassword().toCharArray());
+            }
 
             //Let's use memory persistance to optimize throughput.
             MemoryPersistence memoryPersistence = new MemoryPersistence();

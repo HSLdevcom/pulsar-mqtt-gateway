@@ -18,20 +18,25 @@ public class Main {
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
     private static MqttConfig createSinkConfig(Config config) {
-        String username = "";
-        String password = "";
-        try {
-            //Default path is what works with Docker out-of-the-box. Override with a local file if needed
-            final String usernamePath = ConfigUtils.getEnv("FILEPATH_USERNAME_SECRET").orElse("/run/secrets/mqtt_broker_username");
-            log.debug("Reading username from " + usernamePath);
-            username = new Scanner(new File(usernamePath)).useDelimiter("\\Z").next();
+        final boolean hasAuthentication = config.getBoolean("mqtt-broker.hasAuthentication");
 
-            final String passwordPath = ConfigUtils.getEnv("FILEPATH_PASSWORD_SECRET").orElse("/run/secrets/mqtt_broker_password");
-            log.debug("Reading password from " + passwordPath);
-            password = new Scanner(new File(passwordPath)).useDelimiter("\\Z").next();
+        String username = null;
+        String password = null;
 
-        } catch (Exception e) {
-            log.error("Failed to read secret files", e);
+        if (hasAuthentication) {
+            try {
+                //Default path is what works with Docker out-of-the-box. Override with a local file if needed
+                final String usernamePath = ConfigUtils.getEnv("FILEPATH_USERNAME_SECRET").orElse("/run/secrets/mqtt_broker_username");
+                log.debug("Reading username from " + usernamePath);
+                username = new Scanner(new File(usernamePath)).useDelimiter("\\Z").next();
+
+                final String passwordPath = ConfigUtils.getEnv("FILEPATH_PASSWORD_SECRET").orElse("/run/secrets/mqtt_broker_password");
+                log.debug("Reading password from " + passwordPath);
+                password = new Scanner(new File(passwordPath)).useDelimiter("\\Z").next();
+
+            } catch (Exception e) {
+                log.error("Failed to read secret files", e);
+            }
         }
 
         final String clientId = config.getString("mqtt-broker.clientId");
@@ -45,6 +50,7 @@ public class Main {
                 .setBroker(broker)
                 .setUsername(username)
                 .setPassword(password)
+                .setAuthentication(hasAuthentication)
                 .setClientId(clientId)
                 .setMqttTopic(topic)
                 .setMaxInflight(maxInFlight)
