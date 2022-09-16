@@ -10,6 +10,7 @@ public class MqttConfigBuilder {
     private String clientId;
     private int maxInflight;
     private boolean retainMessage;
+    private int keepAliveInterval;
 
     public MqttConfigBuilder() {
     }
@@ -54,13 +55,18 @@ public class MqttConfigBuilder {
         return this;
     }
 
+    public MqttConfigBuilder setKeepAliveInterval(int keepAliveInterval) {
+        this.keepAliveInterval = keepAliveInterval;
+        return this;
+    }
+
     public MqttConfig build() {
 
         if (broker == null  || mqttTopic == null || (authentication && (username == null || password == null)) || clientId == null) {
             throw new IllegalArgumentException("Required field not set for MqttConfig");
         }
 
-        return new MqttConfig(broker, mqttTopic, username, password, authentication, clientId, maxInflight, retainMessage);
+        return new MqttConfig(broker, mqttTopic, username, password, authentication, clientId, maxInflight, retainMessage, keepAliveInterval);
     }
 
 

@@ -2,18 +2,19 @@ package fi.hsl.pulsar.mqtt;
 
 public class MqttConfig {
 
-    private String broker;
-    private String mqttTopic;
-    private String username;
-    private String password;
+    private final String broker;
+    private final String mqttTopic;
+    private final String username;
+    private final String password;
 
-    private boolean authentication;
-    private String clientId;
-    private int maxInflight;
-    private boolean retainMessage;
+    private final boolean authentication;
+    private final String clientId;
+    private final int maxInflight;
+    private final boolean retainMessage;
+    private final int keepAliveInterval;
 
     public MqttConfig(String broker, String mqttTopic, String username, String password, boolean authentication,
-                      String clientId, int maxInflight, boolean retainMessage) {
+                      String clientId, int maxInflight, boolean retainMessage, int keepAliveInterval) {
 
         this.broker = broker;
         this.mqttTopic = mqttTopic;
@@ -23,6 +24,7 @@ public class MqttConfig {
         this.clientId = clientId;
         this.maxInflight = maxInflight;
         this.retainMessage = retainMessage;
+        this.keepAliveInterval = keepAliveInterval;
     }
 
     public String getBroker() {
@@ -55,6 +57,10 @@ public class MqttConfig {
 
     public boolean getRetainMessage() {
         return retainMessage;
+    }
+
+    public int getKeepAliveInterval() {
+        return keepAliveInterval;
     }
 
     public static MqttConfigBuilder newBuilder() {
