@@ -15,10 +15,10 @@ public class MessageProcessor implements IMessageHandler {
 
     private static final Logger log = LoggerFactory.getLogger(MessageProcessor.class);
 
-    private Consumer<byte[]> consumer;
-    private MqttAsyncClient mqttClient;
-    private String mqttTopic;
-    private boolean retainMessage = false;
+    private final Consumer<byte[]> consumer;
+    private final MqttAsyncClient mqttClient;
+    private final String mqttTopic;
+    private final boolean retainMessage;
 
     private MessageProcessor(Consumer<byte[]> consumer, MqttAsyncClient mqtt, String topic, boolean retain) {
         this.consumer = consumer;
@@ -48,6 +48,7 @@ public class MessageProcessor implements IMessageHandler {
             connectOptions.setCleanSession(false);
             connectOptions.setMaxInflight(config.getMaxInflight());
             connectOptions.setAutomaticReconnect(false); //Let's abort on connection errors
+            connectOptions.setKeepAliveInterval(config.getKeepAliveInterval());
 
             if (config.hasAuthentication()) {
                 connectOptions.setUserName(config.getUsername());
