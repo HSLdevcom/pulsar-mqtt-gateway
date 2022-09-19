@@ -1,5 +1,6 @@
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:11-alpine
 #Install curl for health check
-RUN apt-get update && apt-get install -y --no-install-recommends curl
+RUN apk add --no-cache curl
+
 ADD target/pulsar-mqtt-gateway.jar /usr/app/pulsar-mqtt-gateway.jar
 ENTRYPOINT ["java", "-jar", "/usr/app/pulsar-mqtt-gateway.jar"]
