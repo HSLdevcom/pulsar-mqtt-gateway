@@ -60,3 +60,22 @@ jobs:
           username: ${{ secrets.TRANSITDATA_DOCKERHUB_USER }}
           password: ${{ secrets.TRANSITDATA_DOCKERHUB_TOKEN }}
           tag_semver: true
+  build-aks-dev-docker-image:
+    needs: test
+    runs-on: ubuntu-latest
+    # Run only on aks-dev branch
+    if: github.ref == 'refs/heads/aks-dev'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download .jar file
+        uses: actions/download-artifact@v2
+        with:
+          name: pulsar-mqtt-gateway.jar
+          path: target
+      - name: Build and publish aks-dev Docker image
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: hsldevcom/pulsar-mqtt-gateway
+          username: ${{ secrets.TRANSITDATA_DOCKERHUB_USER }}
+          password: ${{ secrets.TRANSITDATA_DOCKERHUB_TOKEN }}
+          tags: aks-dev
