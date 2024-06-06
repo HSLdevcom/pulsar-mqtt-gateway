@@ -1,3 +1,5 @@
+# pulsar-mqtt-gateway [![Test and create Docker image](https://github.com/HSLdevcom/pulsar-mqtt-gateway/actions/workflows/test-and-build.yml/badge.svg)](https://github.com/HSLdevcom/pulsar-mqtt-gateway/actions/workflows/test-and-build.yml)
+
 ## Description
 
 Application for publishing Pulsar messages to MQTT. The application doesn't care about 
@@ -9,13 +11,13 @@ the data content, it only publishes the binary message as-is.
 
 This project depends on [transitdata-common](https://github.com/HSLdevcom/transitdata-common) project.
 
-Either use released versions from public maven repository or build your own and install to local maven repository:
-  - ```cd transitdata-common && mvn install```  
+Either use released versions from the public GitHub Packages repository (Maven) or build your own and install to local Maven repository:
+- `cd transitdata-common && mvn install`
 
 ### Locally
 
-- ```mvn compile```  
-- ```mvn package```  
+- `mvn compile`
+- `mvn package`  
 
 ### Docker image
 
@@ -24,22 +26,19 @@ Either use released versions from public maven repository or build your own and 
 
 ## Running
 
-Requirements:
-- Pulsar Cluster
-  - By default uses localhost, override host in PULSAR_HOST if needed.
-    - Tip: f.ex if running inside Docker in OSX set `PULSAR_HOST=host.docker.internal` to connect to the parent machine
-  - You can use [this script](https://github.com/HSLdevcom/transitdata/blob/master/bin/pulsar/pulsar-up.sh) to launch it as Docker container
-- Connection to an external MQTT server. 
-  - Configure username and password via files
-    - Set filepath for username via env variable FILEPATH_USERNAME_SECRET, default is `/run/secrets/mqtt_broker_username` 
-    - Set filepath for password via env variable FILEPATH_PASSWORD_SECRET, default is `/run/secrets/mqtt_broker_password` 
-  - Mandatory: Set mqtt-topic via env variable MQTT_TOPIC
+### Dependencies
 
+* Pulsar
+* Connection to a MQTT broker
 
-All other configuration options are configured in the [config file](src/main/resources/environment.conf) 
-which can also be configured externally via env variable CONFIG_PATH
+### Environment variables
 
-Launch Docker container with
-
-```docker-compose -f compose-config-file.yml up <service-name>```   
-
+* `MQTT_HAS_AUTHENTICATION`: whether the MQTT broker uses authentication
+* `FILEPATH_USERNAME_SECRET`: path to the file containing the username, default is `/run/secrets/mqtt_broker_username`
+* `FILEPATH_PASSWORD_SECRET`: path to the file containing the password, default is `/run/secrets/mqtt_broker_password`
+* `MQTT_BROKER_HOST`: URL of the MQTT broker
+* `MQTT_TOPIC`: MQTT topic where to publish messages
+* `MQTT_MAX_INFLIGHT`: maximum amount of MQTT messages in-flight
+* `MQTT_CLIENT_ID`: MQTT client ID
+* `MQTT_RETAIN_MESSAGE`: whether to send MQTT messages with retained flag
+* `MQTT_KEEP_ALIVE_INTERVAL`: interval for MQTT keep-alive, in seconds
