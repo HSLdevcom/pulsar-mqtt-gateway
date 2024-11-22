@@ -25,15 +25,12 @@ public class Main {
 
         if (hasAuthentication) {
             try {
-                //Default path is what works with Docker out-of-the-box. Override with a local file if needed
-                final String usernamePath = ConfigUtils.getEnv("FILEPATH_USERNAME_SECRET").orElse("/run/secrets/mqtt_broker_username");
-                log.debug("Reading username from " + usernamePath);
-                username = new Scanner(new File(usernamePath)).useDelimiter("\\Z").next();
-
-                final String passwordPath = ConfigUtils.getEnv("FILEPATH_PASSWORD_SECRET").orElse("/run/secrets/mqtt_broker_password");
-                log.debug("Reading password from " + passwordPath);
-                password = new Scanner(new File(passwordPath)).useDelimiter("\\Z").next();
-
+                username = System.getenv("MQTT_BROKER_USERNAME");
+                password = System.getenv("MQTT_BROKER_PASSWORD");
+                if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+                    log.error("Failed to find credentials");
+                    throw new IllegalArgumentException("Failed to find credentials");
+                }
             } catch (Exception e) {
                 log.error("Failed to read secret files", e);
             }
