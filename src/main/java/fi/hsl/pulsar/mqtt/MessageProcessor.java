@@ -33,10 +33,12 @@ public class MessageProcessor implements IMessageHandler {
             }
 
             @Override
-            public void messageArrived(String topic, MqttMessage message) throws Exception {}
+            public void messageArrived(String topic, MqttMessage message) throws Exception {
+            }
 
             @Override
-            public void deliveryComplete(IMqttDeliveryToken token) {}
+            public void deliveryComplete(IMqttDeliveryToken token) {
+            }
         });
 
     }
@@ -72,8 +74,7 @@ public class MessageProcessor implements IMessageHandler {
             });
             token.waitForCompletion();
             log.info("Connection to MQTT finished");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Error connecting to MQTT", e);
             if (mqttClient != null) {
                 //Paho doesn't close the connection threads unless we force-close it.
@@ -95,24 +96,25 @@ public class MessageProcessor implements IMessageHandler {
 
             final String topicSuffix = msg.getProperty(TransitdataProperties.KEY_MQTT_TOPIC);
 
-            mqttClient.publish(topicSuffix == null ? mqttTopic : mqttTopic + "/" + topicSuffix, mqttMsg, null, new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    //Ack Pulsar message
-                    consumer.acknowledgeAsync(msg).thenRun(() -> {
-                        log.debug("Mqtt message delivered");
-                    });
-                }
+            mqttClient.publish(topicSuffix == null ? mqttTopic : mqttTopic + "/" + topicSuffix, mqttMsg, null,
+                    new IMqttActionListener() {
+                        @Override
+                        public void onSuccess(IMqttToken asyncActionToken) {
+                            //Ack Pulsar message
+                            consumer.acknowledgeAsync(msg).thenRun(() -> {
+                                log.debug("Mqtt message delivered");
+                            });
+                        }
 
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    List<String> topics = Arrays.asList(asyncActionToken.getTopics());
-                    String msg = "Failed to send message [" + asyncActionToken.getMessageId() + "] to topics " + String.join(", ", topics);
-                    log.error(msg, exception);
-                }
-            });
-        }
-        catch (Exception e) {
+                        @Override
+                        public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+                            List<String> topics = Arrays.asList(asyncActionToken.getTopics());
+                            String msg = "Failed to send message [" + asyncActionToken.getMessageId() + "] to topics "
+                                    + String.join(", ", topics);
+                            log.error(msg, exception);
+                        }
+                    });
+        } catch (Exception e) {
             log.error("Error publishing MQTT message, existing app", e);
             closeMqttClient();
             throw e;
@@ -124,8 +126,7 @@ public class MessageProcessor implements IMessageHandler {
             //Paho doesn't close the connection threads unless we force-close it.
             mqttClient.disconnectForcibly(1000L, 1000L);
             mqttClient.close(true);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Failed to close MQTT client connection", e);
         }
     }

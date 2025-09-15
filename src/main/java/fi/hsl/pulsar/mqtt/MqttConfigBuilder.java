@@ -62,12 +62,13 @@ public class MqttConfigBuilder {
 
     public MqttConfig build() {
 
-        if (broker == null  || mqttTopic == null || (authentication && (username == null || password == null)) || clientId == null) {
+        if (broker == null || mqttTopic == null || (authentication && (username == null || password == null))
+                || clientId == null) {
             throw new IllegalArgumentException("Required field not set for MqttConfig");
         }
 
-        return new MqttConfig(broker, mqttTopic, username, password, authentication, clientId, maxInflight, retainMessage, keepAliveInterval);
+        return new MqttConfig(broker, mqttTopic, username, password, authentication, clientId, maxInflight,
+                retainMessage, keepAliveInterval);
     }
-
 
 }
