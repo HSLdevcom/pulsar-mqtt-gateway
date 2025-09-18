@@ -14,7 +14,7 @@ public class MqttConfig {
     private final int keepAliveInterval;
 
     public MqttConfig(String broker, String mqttTopic, String username, String password, boolean authentication,
-                      String clientId, int maxInflight, boolean retainMessage, int keepAliveInterval) {
+            String clientId, int maxInflight, boolean retainMessage, int keepAliveInterval) {
 
         this.broker = broker;
         this.mqttTopic = mqttTopic;

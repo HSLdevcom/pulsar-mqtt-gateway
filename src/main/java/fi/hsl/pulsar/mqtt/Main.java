@@ -44,20 +44,12 @@ public class Main {
         final int keepAliveInterval = config.getInt("mqtt-broker.keepAliveInterval");
         log.info("Setting MQTT topic to {} with retain message enabled: {} ", topic, retainMessage);
 
-        MqttConfigBuilder configBuilder = MqttConfig.newBuilder()
-                .setBroker(broker)
-                .setUsername(username)
-                .setPassword(password)
-                .setAuthentication(hasAuthentication)
-                .setClientId(clientId)
-                .setMqttTopic(topic)
-                .setMaxInflight(maxInFlight)
-                .setRetainMessage(retainMessage)
-                .setKeepAliveInterval(keepAliveInterval);
+        MqttConfigBuilder configBuilder = MqttConfig.newBuilder().setBroker(broker).setUsername(username)
+                .setPassword(password).setAuthentication(hasAuthentication).setClientId(clientId).setMqttTopic(topic)
+                .setMaxInflight(maxInFlight).setRetainMessage(retainMessage).setKeepAliveInterval(keepAliveInterval);
 
         return configBuilder.build();
     }
-
 
     public static void main(String[] args) {
         log.info("Launching Pulsar-MQTT-Gateway.");
@@ -81,13 +73,12 @@ public class Main {
             if (healthServer != null) {
                 healthServer.addCheck(mqttHealthCheck);
             }
-            
+
             log.info("Starting to process messages");
 
             app.launchWithHandler(processor);
 
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             log.error("Exception at main", e);
         }
 
