@@ -17,7 +17,7 @@ public class Main {
 
     private static final Logger log = LoggerFactory.getLogger(Main.class);
 
-    private static MqttConfig createSinkConfig(Config config) {
+    static MqttConfig createSinkConfig(Config config) {
         final boolean hasAuthentication = config.getBoolean("mqtt-broker.hasAuthentication");
 
         String username = null;
