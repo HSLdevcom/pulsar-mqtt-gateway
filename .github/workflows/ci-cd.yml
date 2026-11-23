@@ -1,0 +1,20 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  ci-cd:
+    uses: HSLdevcom/transitdata-shared-workflows/.github/workflows/ci-cd-java.yml@1.1.1
+    secrets: inherit
+    with:
+      runTestsInsideDocker: true

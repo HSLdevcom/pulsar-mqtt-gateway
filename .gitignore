@@ -18,3 +18,7 @@ target/*
 *.tmp
 *.temp
 dependency-reduced-pom.xml
+
+# Local MegaLinter runs
+megalinter-reports/
+mega-linter.log

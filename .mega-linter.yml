@@ -1,0 +1,7 @@
+# Extends the shared MegaLinter config; keep the ref in sync with .github/workflows/ci-cd.yml.
+EXTENDS:
+  - https://raw.githubusercontent.com/HSLdevcom/transitdata-shared-workflows/1.1.1/megalinter/base.yml
+
+# v8r validates dependabot.yml against the SchemaStore schema, which does not yet allow `updates`
+# under `multi-ecosystem-groups` (the unified InfoDevOps template). GitHub accepts the file.
+YAML_V8R_FILTER_REGEX_EXCLUDE: '(^|/)\.github/dependabot\.yml$'
