@@ -1,4 +1,4 @@
-# Extends the shared MegaLinter config; keep the ref in sync with .github/workflows/ci-cd.yml.
+# Extends the shared MegaLinter config; keep the ref in sync with the tag pinned in .github/workflows/ci-cd.yml.
 EXTENDS:
   - https://raw.githubusercontent.com/HSLdevcom/transitdata-shared-workflows/1.1.1/megalinter/base.yml
 
