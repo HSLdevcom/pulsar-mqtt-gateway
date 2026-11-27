@@ -20,7 +20,7 @@ public class MessageProcessor implements IMessageHandler {
     private final String mqttTopic;
     private final boolean retainMessage;
 
-    private MessageProcessor(Consumer<byte[]> consumer, MqttAsyncClient mqtt, String topic, boolean retain) {
+    MessageProcessor(Consumer<byte[]> consumer, MqttAsyncClient mqtt, String topic, boolean retain) {
         this.consumer = consumer;
         this.mqttClient = mqtt;
         this.mqttTopic = topic;

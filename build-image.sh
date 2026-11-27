@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build -t pulsar-mqtt-gateway .
+docker build --secret id=github_token,env=GITHUB_TOKEN -t hsldevcom/pulsar-mqtt-gateway .

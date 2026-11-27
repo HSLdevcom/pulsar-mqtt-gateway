@@ -1,0 +1,21 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+  pull_request:
+
+permissions:
+  contents: read
+  packages: read
+
+jobs:
+  ci-cd:
+    uses: HSLdevcom/transitdata-shared-workflows/.github/workflows/ci-cd-java.yml@7d7ce3792154049042bf37ad2b00739a1d3bfbfe # 1.1.1
+    # The shared workflow declares no workflow_call secrets, so they cannot be passed explicitly.
+    secrets: inherit # zizmor: ignore[secrets-inherit]
+    with:
+      runTestsInsideDocker: true
